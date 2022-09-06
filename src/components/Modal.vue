@@ -1,0 +1,80 @@
+<template>
+  <div
+    class="modal-backdrop"
+    @click.self="closeDialog(false)"
+  >
+    <div class="modal-dialog">
+      <div class="modal-title">{{ text }}</div>
+      <div class="modal-actions">
+        <button
+          class="delete"
+          @click="closeDialog()"
+        >Да</button>
+        <button
+          class="cancel"
+          @click="closeDialog(false)"
+        >Отмена</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { closeDialog } from 'vue3-promise-dialog'
+export default {
+  props: {
+    text: String
+  },
+  setup () {
+    function returnValue () {
+      return true;
+    }
+    return {
+      returnValue,
+      closeDialog
+    };
+  },
+}
+</script>
+
+<style lang="sass">
+.modal-backdrop
+  background: rgba(78, 78, 78, 0.658)
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  display: flex
+  flex-direction: row
+  justify-content: center
+  align-items: center
+  text-align: center
+
+.modal-dialog
+  width: 30rem
+  background: rgb(255, 255, 255)
+  padding: 1.5rem 2rem
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)
+  border-radius: 0.3rem
+  transition: 0.5s
+
+.modal-title
+  font-weight: bold
+  font-size: 1.3rem
+  margin-bottom: 1rem
+
+.modal-actions
+  display: flex
+  flex-direction: row
+  justify-content: space-around
+  padding: 10px 10px
+  & button
+    height: 30px
+    padding: 0 30px
+  & .delete
+    background: red
+    color: white
+  & .cancel
+    border: 1px solid blue
+</style>
