@@ -1,5 +1,8 @@
 export const todoService = {
+
+  // STORAGE KEY
   store_key: 'todo',
+
 
   getAllTodo () {
     try {
@@ -9,18 +12,21 @@ export const todoService = {
       return []
     }
   },
+
   setAllTodo (todos) {
     window.localStorage.setItem(this.store_key, JSON.stringify(todos))
   },
+
   getItemById (id) {
     const items = this.getAllTodo()
-    const item = items.find(todo => Number(todo.id) === Number(id))
+    const item = items.find(todo => todo.id == id)
     if (!item) return null
     return item
   },
+
   setItem (todo) {
     const items = this.getAllTodo()
-    const idx = items.findIndex(item => Number(item.id) === Number(todo.id))
+    const idx = items.findIndex(item => item.id == todo.id)
     if (idx !== -1) {
       items.splice(idx, 1, todo)
     } else {
@@ -28,9 +34,10 @@ export const todoService = {
     }
     this.setAllTodo(items)
   },
+
   removeItem (todo) {
     const items = this.getAllTodo()
-    const idx = items.findIndex(item => Number(item.id) === Number(todo.id))
+    const idx = items.findIndex(item => item.id == todo.id)
     items.splice(idx, 1)
     this.setAllTodo(items)
   }

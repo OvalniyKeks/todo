@@ -90,6 +90,8 @@ export default {
     }
   },
   methods: {
+
+    // Add new task
     addTask () {
       if (!this.taskName) return
 
@@ -101,18 +103,17 @@ export default {
 
       this.taskName = ''
 
-      this.saveHistory(this.todo)
-
-      todoService.setItem({ id: this.todo?.id ?? Date.now(), ...this.todo })
     },
+
+    // handle remove task 
     async deleteTask (task) {
       if (await confirm('Вы точно хотите удалить задачу?')) {
         const idx = this.todo.tasks.findIndex(item => item === task)
         this.todo.tasks.splice(idx, 1)
-        todoService.setItem({ id: this.todo?.id ?? Date.now(), ...this.todo })
       }
     },
 
+    // handle remove todo 
     async deleteTodo () {
       if (await confirm('Вы точно хотите удалить заметку?')) {
         todoService.removeItem(this.todo)
@@ -120,13 +121,14 @@ export default {
       }
     },
 
+    // saving Todo
     saveTodo () {
+      this.watching = false
       todoService.setItem({ id: this.todo?.id ?? Date.now(), ...this.todo })
       this.$router.push({ name: 'Main' })
     },
-    cancelEdit () {
-      console.log('dawda')
-    },
+
+    // saving history actions
     saveHistory (val) {
       if (this.watching) {
         this.todoHistory.push(JSON.parse(JSON.stringify(val)));
@@ -135,6 +137,8 @@ export default {
         this.watching = true;
       }
     },
+
+    // undoing action
     undo () {
       this.watching = false;
       if (this.histotyIndex > 0) {
@@ -142,6 +146,8 @@ export default {
         this.todo = this.todoHistory[this.histotyIndex];
       }
     },
+
+    // redoing action
     redo () {
       this.watching = false;
       if (this.histotyIndex < (this.todoHistory.length - 1)) {
@@ -151,6 +157,7 @@ export default {
     },
   },
   watch: {
+    // watching and saving history actions
     todo: {
       handler: function (val) {
         this.saveHistory(val)
@@ -158,8 +165,9 @@ export default {
       deep: true,
     },
   },
+  // save data unsaved
   async beforeRouteLeave (to, from, next) {
-    if (this.todoHistory.length < 2) {
+    if (this.todoHistory.length < 2 || this.watching === false) {
       next()
       return
     }

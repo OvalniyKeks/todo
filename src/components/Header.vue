@@ -19,10 +19,6 @@
 
   </div>
 </template>
-<script>
-export default {
-}
-</script>
 <style lang="sass">
 .header
   position: relative
@@ -55,8 +51,6 @@ export default {
     & img
       width: 18px
       margin-right: 5px
-
-
 
 @media screen and (max-width: 767px)
   .header

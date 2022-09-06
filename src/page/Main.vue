@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <div v-if="todos && todos.length === 0">Заметок нет</div>
     <task-card
       v-for="(todo,i) of todos"
       :key="`card-todo-${i}`"
